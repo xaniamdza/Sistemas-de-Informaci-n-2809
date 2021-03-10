@@ -5,7 +5,7 @@ const login = (email, passwd, callback) => {
         bd_data={
             'email':email,
             'depto': "ventas",
-            'phone': 5512121212
+            'phone': '5512121212'
         }
     } else {
         err = {'mensaje': "cedenciales incorrectas"}
