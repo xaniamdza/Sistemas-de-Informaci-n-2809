@@ -4,22 +4,34 @@ var usuario = require('../models/user'); //tenemos que crear ese archu¿ivo en e
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render("frmLogin", {})
 });
 
 // esto solo realiza el proceso de autenticacion, pero no tiene elementos de seguridad
 router.post('/login', (req, res, next) => {
   //console.log(req.body.email, req.body.passwd);
   usuario.login(req.body.email, req.body.passwd, (e, d)=>{ // req.body.passwd SHA256: algoritmo hash
-    if (d) {
-      res.send('Login correcto');    
+    if (d) {   
       ses = req.session;
-      console.log(ses, id); 
+      console.log(ses.id);
+      ses.userdata = d;
+      console.log(ses);
+      res.redirect('/'); 
     } else {
       res.json(e);
     }
   });
 
+});
+
+router.get('/logout',(req,res,next)=>{
+  req.session.destroy((falla)=>{
+    if (falla) {
+      res.send(501,"Error")
+    } else {
+      res.redirect('/');
+    }
+  });
 });
 
 module.exports = router;
