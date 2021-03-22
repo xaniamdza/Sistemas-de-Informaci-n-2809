@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var usuario = require('../models/user'); //tenemos que crear ese archu¿ivo en ese directorio
+var usuario = require('../models/user'); //tenemos que crear ese archivo en ese directorio
 var jwt = require('jsonwebtoken');
 
 /* GET users listing. */
@@ -20,9 +20,11 @@ router.post('/login', (req, res, next) => {
       const payload = {
         datos:d
       };
-      const clave = 'dios1234'; // obtener desde env
+      const clave = process.env.SECRETO || 'dios1234'; // obtener desde env
       const token = jwt.sign(payload, clave, {expiresIn: 60 * 5});
       ses.token = token; 
+    //  var decoded = jwt.verify(token, clave);
+    //  console.log(decoded.datos)
       res.redirect('/'); 
     } else {
       res.json(e);
